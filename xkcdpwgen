@@ -5,6 +5,7 @@ import argparse
 import random
 
 if __name__ == '__main__' :
+# Parses arguments
 	parser = argparse.ArgumentParser(description='Program used to generate XKCD style passwords.')
 	parser.add_argument('-w','--words', help='include WORDS words in the password (default=4)', type=int, default=4)
 	parser.add_argument('-c','--caps', help='capitalize the first letter of CAPS random words (default=0)', type=int, default=0)
