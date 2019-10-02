@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+import sys
+import argparse
+import random
+
+if __name__ == '__main__' :
+	parser = argparse.ArgumentParser(description='Program used to generate XKCD style passwords.')
+	parser.add_argument('-w','--words', help='include WORDS words in the password (default=4)', type=int, default=4)
+	parser.add_argument('-c','--caps', help='capitalize the first letter of CAPS random words (default=0)', type=int, default=0)
+	parser.add_argument('-n', '--numbers', help='insert NUMBERS random numbers in the password (default=0)', type=int, default=0)
+	parser.add_argument('-s','--symbols', help='insert SYMBOLS random symbols in the password (default=0)', type=int, default=0)
+	args = parser.parse_args()
+
+wordListLocation = open("words.txt")
+
+wordList = wordListLocation.read()
+strWordList = str(wordList).splitlines()
+
+wordSet = random.sample(strWordList,args.words)
+
+intNums = 0
+
+listNum = []
+
+if (args.numbers > 0) :
+	while (args.numbers > intNums) :
+		makeList = [str(random.randint(0,9))]
+		intNums += 1
+		listNum = listNum + makeList
+
+	wordSet = wordSet + listNum
+	random.shuffle(wordSet)
+
+intCaps = 0
+listCaps = []
+
+if (args.caps > 0 and (args.caps <= args.words)) :
+	capsSet = random.sample(wordSet,args.caps)
+	wordSet = list(set(wordSet)-set(capsSet))
+
+	while( args.caps > intCaps):
+		toAppend = capsSet[intCaps].title()
+		listCaps.append(toAppend)
+		intCaps += 1
+
+	wordSet = wordSet + listCaps
+	random.shuffle(wordSet)
+
+symbolList = ["~","!","@","#","$","%","^","&","*","(",")","-","=","_","+"]
+if (args.symbols > 0) :
+	symSet = random.sample(symbolList,args.symbols)
+
+	wordSet = wordSet + symSet
+	random.shuffle(wordSet)
+
+
+
+print ("".join(wordSet))
